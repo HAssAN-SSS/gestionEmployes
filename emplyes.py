@@ -135,16 +135,17 @@ def Rechercher():
     # hlistLabel=Label(winlist,text="--{nom}--{dateNaissance}--{estCommercial}--{salaire}DH--{salairenet}DH--{sexe}--{situationFamiliale}--")
     # hlistLabel.pack()
     cn = 0
-    for lmt in Employe.objLista:
+    lesDoc =db.employes.find()
+    for doc in lesDoc:
 
-        if nomEntry.get() == lmt.nom:
+        if nomEntry.get() == doc['nom']:
             cn += 1   #?count
             # listLabel=Label(winlist,text=f"--{lmt.nom}--{lmt.dateNaissance}--{lmt.estCommercial}--{lmt.salaire}DH--{lmt.salairnet}DH--{lmt.sexe}--{lmt.situationFamiliale}--")
             # listLabel.pack()
-            s = str(lmt.salaire)+" DH"
-            sn = str(lmt.salairnet)+' DH'
+            s = str(doc['salaire'])+" DH"
+            sn = str(doc['salairnet'])+' DH'
             tableau.insert(parent="", index='end', iid=cn, text="", values=(
-                lmt.nom, lmt.dateNaissance, lmt.estCommercial, s, sn, lmt.sexe, lmt.situationFamiliale))
+                doc['nom'], doc['date'], doc['estCommercial'], s, sn, doc['sexe'], doc['situationFamiliale']))
 
 #! ==================================list======================================
 def liste():
