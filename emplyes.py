@@ -1,4 +1,8 @@
 
+# import pymongo
+from datetime import datetime
+import json
+from pymongo import MongoClient
 from cgitb import text
 from multiprocessing.sharedctypes import Value
 
@@ -69,13 +73,35 @@ mm = Employe('3/18/22', 'oui', 'Ali', 6500, 'Homme', 'Celibataire')
 h = Employe('3/18/22', 'oui', 'HAssAN', 10000, 'Homme', 'Celibataire')
 
 
-def butAjoutt():
+cluster = MongoClient()
+dbs = cluster.list_database_names()
+db = cluster.employes
+for doc in db.employes:
+    print(doc)
 
+
+
+def butAjoutt():
+    
     if selection.get() != '' and nomEntry.get() != '' and cal.get() != '' and EntrySalaire.get() != '' and (varsexe.get() == 'Homme' or varsexe.get() == 'Femme'):
         objjj = Employe(cal.get(), varcomer.get(), nomEntry.get(), float(
             EntrySalaire.get()), varsexe.get(), selection.get())
         fnet.delete(0, END)
         fnet.insert(0, (f'{objjj.salairnet} DH'))
+        # !====pymongo=====
+        # obj_json = json.dumps(objjj, cls=Employe)
+        # dateNaissance, estCommercial, nom, salaire, sexe, situationFamiliale
+        db.employes.insert_one({
+            'nom':objjj.nom,
+            'date':objjj.dateNaissance,
+            'estCommercial':objjj.estCommercial,
+            'salaire':objjj.salaire,
+            'sexe':objjj.sexe,
+            'situationFamiliale':objjj.situationFamiliale
+
+
+
+            })
 
 
 def Rechercher():
@@ -237,3 +263,4 @@ print(Employe.objLista[0].nom)
 #!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%1%%%
 # ?[Toplevel widget Label widget Button widgetCanvas widget Checkbutton widget Entry widgetFrame widget LabelFrame widget Listbox widgetMenu widget Menubutton widget Message widgetOptionMenu widget PanedWindow widget Radiobutton widgetScale widget Scrollbar widget Spinbox widgetText widget Bitmap Class widget Image Class widget]
 #!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
