@@ -76,8 +76,7 @@ h = Employe('3/18/22', 'oui', 'HAssAN', 10000, 'Homme', 'Celibataire')
 cluster = MongoClient()
 dbs = cluster.list_database_names()
 db = cluster.employes
-for doc in db.employes:
-    print(doc)
+
 
 
 
@@ -97,7 +96,9 @@ def butAjoutt():
             'estCommercial':objjj.estCommercial,
             'salaire':objjj.salaire,
             'sexe':objjj.sexe,
-            'situationFamiliale':objjj.situationFamiliale
+            'situationFamiliale':objjj.situationFamiliale,
+            'salairnet':objjj.salairnet,
+            'salaire':objjj.salaire
 
 
 
@@ -145,7 +146,7 @@ def Rechercher():
             tableau.insert(parent="", index='end', iid=cn, text="", values=(
                 lmt.nom, lmt.dateNaissance, lmt.estCommercial, s, sn, lmt.sexe, lmt.situationFamiliale))
 
-
+#! ==================================list======================================
 def liste():
     winlist = Tk()
     winlist.title('Liste')
@@ -174,13 +175,21 @@ def liste():
     # hlistLabel=Label(winlist,text="--{nom}--{dateNaissance}--{estCommercial}--{salaire}DH--{salairenet}DH--{sexe}--{situationFamiliale}--")
     # hlistLabel.pack()
     cn = 0
-    for lmt in Employe.objLista:
+    lesDoc =db.employes.find()
+    for doc in lesDoc:
         cn += 1
-        s = str(lmt.salaire)+" DH"
-        sn = str(lmt.salairnet)+' DH'
-
+        s = str(doc['salaire'])+" DH"
+        sn = str(doc['salairnet'])+' DH'
+        
         tableau.insert(parent="", index='end', iid=f'{cn}', text="", values=(
-            lmt.nom, lmt.dateNaissance, lmt.estCommercial, s, sn, lmt.sexe, lmt.situationFamiliale))
+            doc['nom'], doc['date'], doc['estCommercial'], s, sn, doc['sexe'], doc['situationFamiliale']))
+    # for lmt in Employe.objLista:
+    #     cn += 1
+    #     s = str(lmt.salaire)+" DH"
+    #     sn = str(lmt.salairnet)+' DH'
+
+    #     tableau.insert(parent="", index='end', iid=f'{cn}', text="", values=(
+    #         lmt.nom, lmt.dateNaissance, lmt.estCommercial, s, sn, lmt.sexe, lmt.situationFamiliale))
 
         # winlist.pack()
         # listLabel=Label(winlist,text=f"--{lmt.nom}--{lmt.dateNaissance}--{lmt.estCommercial}--{lmt.salaire}DH--{lmt.salairnet}DH--{lmt.sexe}--{lmt.situationFamiliale}--")
