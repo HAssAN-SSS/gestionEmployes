@@ -103,7 +103,54 @@ def butAjoutt():
 
 
             })
+# --------------------------------------delet-----------------
+def butDelete():
+    
+    delete = Tk()
+    delete.title('Deleted')
 
+    #!-----------------------treeview----------------------------------------------
+    tableau = Treeview(delete)
+    tableau['column'] = ('nom', 'dateNaissance', 'estCommercial',
+                         'salaire', 'salairenet', 'sexe', 'situationFamiliale')
+    tableau.column('#0', width=20)
+    tableau.column('nom', width=150, anchor='center')
+    tableau.column('dateNaissance', width=120, anchor='center')
+    tableau.column('estCommercial', width=110, anchor='center')
+    tableau.column('salaire', width=150, anchor='center')
+    tableau.column('salairenet', width=160, anchor='center')
+    tableau.column('sexe', width=120, anchor='center')
+    tableau.column('situationFamiliale', width=120, anchor='center')
+    tableau.heading('#0', text='', anchor='center')
+    tableau.heading('nom', text='Nom', anchor='center')
+    tableau.heading('dateNaissance', text='Date Naissance', anchor='center')
+    tableau.heading('estCommercial', text='Commercial', anchor='center')
+    tableau.heading('salaire', text='Salaire', anchor='center')
+    tableau.heading('salairenet', text='Salaire(NET)', anchor='center')
+    tableau.heading('sexe', text='sexe', anchor='center')
+    tableau.heading('situationFamiliale',
+                    text='Situation Familiale', anchor='center')
+
+    tableau.pack(padx=10, pady=10)
+    # hlistLabel=Label(winlist,text="--{nom}--{dateNaissance}--{estCommercial}--{salaire}DH--{salairenet}DH--{sexe}--{situationFamiliale}--")
+    # hlistLabel.pack()
+    cn = 0
+    lesDoc =db.employes.find()
+    for doc in lesDoc:
+
+        if nomEntry.get() == doc['nom']:
+            cn += 1   #?count
+            # listLabel=Label(winlist,text=f"--{lmt.nom}--{lmt.dateNaissance}--{lmt.estCommercial}--{lmt.salaire}DH--{lmt.salairnet}DH--{lmt.sexe}--{lmt.situationFamiliale}--")
+            # listLabel.pack()
+            s = str(doc['salaire'])+" DH"
+            sn = str(doc['salairnet'])+' DH'
+            tableau.insert(parent="", index='end', iid=cn, text="", values=(
+                doc['nom'], doc['date'], doc['estCommercial'], s, sn, doc['sexe'], doc['situationFamiliale']))
+            inNom = doc['nom']
+            db.employes.delete_one({'nom':inNom})
+            
+
+# -------------------------------------------------------------------------------------------------------------------------
 
 def Rechercher():
     winlist = Tk()
@@ -258,8 +305,10 @@ fnet.grid(row=10, column=1)
 # frame buttones-------------------------------------------------------------------------------------
 butframe = LabelFrame(win, bd=0)
 butframe.grid(row=0, column=1, columnspan=1, rowspan=2, sticky=SE)
-butAjou = Button(butframe, text='Ajouter', padx=50, pady=8, command=butAjoutt)
-butAjou.grid(row=0, column=2, padx=10, pady=15, sticky=NE)
+butAjou = Button(butframe, text='Ajouter', padx=15, pady=8, command=butAjoutt)
+butAjou.grid(row=0, column=2, padx=10, pady=15, sticky=NW)
+butDel = Button(butframe, text='Delete', padx=20, pady=8, command=butDelete)
+butDel.grid(row=0, column=2, padx=10, pady=15, sticky=NE)
 butRech = Button(butframe, text='Rechercher', padx=40, pady=8, command=Rechercher).grid(
     row=1, column=2, padx=10, pady=15, sticky=NE)
 butList = Button(butframe, text='Liste', padx=58, pady=8, command=liste)
